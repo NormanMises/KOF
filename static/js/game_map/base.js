@@ -1,4 +1,5 @@
 import { AcGameObject } from '/static/js/ac_game_object/base.js';
+import { Controller } from '/static/js/controller/base.js';
 
 class GameMap extends AcGameObject {
 	constructor(root) {
@@ -11,6 +12,8 @@ class GameMap extends AcGameObject {
 		this.ctx = this.$canvas[0].getContext('2d'); // 为了使 canvas 能获取输入
 		this.root.$kof.append(this.$canvas);
 		this.$canvas.focus(); // 聚焦
+
+		this.controller = new Controller(this.$canvas);
 	}
 
 	start() {}

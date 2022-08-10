@@ -20,13 +20,15 @@ class Player extends AcGameObject {
 		this.speedy = 1000; // 跳起的初始速度
 
 		this.direction = 1;
+		this.status = 3; // 0: idle, 1: forward, 2: backward, 3: jump, 4: attack, 5: beaten, 6: dead
+		this.pressed_keys = this.root.game_map.controller.pressed_keys;
 
 		this.ctx = this.root.game_map.ctx;
 	}
 
 	start() {}
 
-	move() {
+	update_move() {
 		this.vy += this.gravity;
 
 		this.x += (this.vx * this.timedelta) / 1000;
@@ -38,8 +40,26 @@ class Player extends AcGameObject {
 		}
 	}
 
+	update_control() {
+		let w, a, d, space;
+		if (this.id === 0) {
+      w = this.pressed_keys.has('w')
+      a = this.pressed_keys.has('a')
+      d = this.pressed_keys.has('d')
+      space = this.pressed_keys.has(' ')
+    }
+    else
+    {
+      w = this.pressed_keys.has('ArrowUp');
+		a = this.pressed_keys.has('ArrowLeft');
+		d = this.pressed_keys.has('ArrowRight');
+		space = this.pressed_keys.has('Enter');
+      }
+	}
+
 	update() {
-		this.move();
+		this.update_control();
+		this.update_move();
 		this.render();
 	}
 
