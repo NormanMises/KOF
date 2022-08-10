@@ -126,7 +126,7 @@ class Player extends AcGameObject {
                 let k =
                     parseInt(this.frame_current_cnt / obj.frame_rate) %
                     obj.frame_cnt;
-                
+
                 let image = obj.gif.frames[k].image;
 
                 this.ctx.drawImage(
@@ -144,7 +144,7 @@ class Player extends AcGameObject {
                 let k =
                     parseInt(this.frame_current_cnt / obj.frame_rate) %
                     obj.frame_cnt;
-                
+
                 let image = obj.gif.frames[k].image;
 
                 this.ctx.drawImage(

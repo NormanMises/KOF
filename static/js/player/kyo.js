@@ -30,7 +30,7 @@ class Kyo extends Player {
                 obj.loaded = true;
 
                 if (i === 3) {
-                    obj.frame_rate = 4; 
+                    obj.frame_rate = 4;
                 }
             };
         }
