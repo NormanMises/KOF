@@ -10,6 +10,8 @@ class Kyo extends Player {
 
     init_animations() {
         let outer = this;
+        let offsets = [0, -22, -22, -140, 0, 0, 0];
+
         for (let i = 0; i < 7; i++) {
             let gif = GIF();
             gif.load(`/static/images/player/kyo/${i}.gif`);
@@ -17,9 +19,9 @@ class Kyo extends Player {
                 gif: gif,
                 frame_cnt: 0, // 帧数
                 frame_rate: 5, // 帧率
-                offset_y: 0, // y 方向偏移量
+                offset_y: offsets[i], // y 方向偏移量
                 loaded: false,
-                scale: 2,
+                scale: 2, // 放大倍数
             });
 
             gif.onload = function () {

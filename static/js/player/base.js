@@ -19,7 +19,7 @@ class Player extends AcGameObject {
         this.speedx = 400; // 跳起的水平速度
         this.speedy = -1000; // 跳起的初始速度
 
-        this.direction = 1; // 朝向
+        this.direction = 1; // 朝向 1 右
         this.status = 3; // 0: idle, 1: forward, 2: backward, 3: jump, 4: attack, 5: beaten, 6: dead
         this.animations = new Map();
         this.frame_current_cnt = 0; // 帧数记录
@@ -32,8 +32,9 @@ class Player extends AcGameObject {
     start() {}
 
     update_move() {
-        this.vy += this.gravity;
-
+        if (this.status === 3) {
+            this.vy += this.gravity;
+        }
         this.x += (this.vx * this.timedelta) / 1000;
         this.y += (this.vy * this.timedelta) / 1000;
 
@@ -65,7 +66,11 @@ class Player extends AcGameObject {
         }
 
         if (this.status === 0 || this.status === 1) {
-            if (w) {
+            if (space) {
+                this.status = 4;
+                this.vx = 0;
+                this.frame_current_cnt = 0;
+            } else if (w) {
                 if (d) {
                     this.vx = this.speedx;
                 } else if (a) {
@@ -100,19 +105,33 @@ class Player extends AcGameObject {
 
         let status = this.status;
 
+        if (this.status === 1 && this.direction * this.vx < 0) status = 2; // 后退时的状态
+
         let obj = this.animations.get(status);
         if (obj && obj.loaded) {
-            let k = this.frame_current_cnt % obj.frame_cnt;
+            let k =
+                parseInt(this.frame_current_cnt / obj.frame_rate) %
+                obj.frame_cnt;
             let image = obj.gif.frames[k].image;
             this.ctx.drawImage(
                 image,
                 this.x,
-                this.y,
-                image.width,
-                image.height
+                this.y + obj.offset_y,
+                image.width * obj.scale,
+                image.height * obj.scale
             );
         }
 
+        // 挥拳后在最后一帧停下
+        if (status === 4) {
+            if (
+                this.frame_current_cnt ===
+                obj.frame_rate * (obj.frame_cnt - 1)
+            ) {
+                this.status = 0;
+            }
+        }
+        
         this.frame_current_cnt++;
     }
 }
