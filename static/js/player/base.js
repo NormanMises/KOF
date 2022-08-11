@@ -13,6 +13,10 @@ class Player extends AcGameObject {
         this.color = info.color;
 
         this.hp = 100;
+        this.$hp = this.root.$kof.find(`.kof-head-hp-${this.id} > div`);
+        this.$hp_div = this.root.$kof.find(
+            `.kof-head-hp-${this.id} > div > div`
+        );
 
         this.vx = 0;
         this.vy = 0;
@@ -39,7 +43,7 @@ class Player extends AcGameObject {
         this.x += (this.vx * this.timedelta) / 1000;
         this.y += (this.vy * this.timedelta) / 1000;
 
-        let [a, b] = this.root.players;
+        /* let [a, b] = this.root.players;
         if (a !== this) {
             [a, b] = [b, a];
         }
@@ -64,7 +68,7 @@ class Player extends AcGameObject {
             a.y -= (this.vy * this.timedelta) / 1000 / 2;
 
             if (this.status === 3) this.status = 0;
-        }
+        } */
 
         if (this.y > 450) {
             this.y = 450;
@@ -141,11 +145,25 @@ class Player extends AcGameObject {
         this.status = 5;
         this.frame_current_cnt = 0;
 
-        this.hp = Math.max(this.hp - 50, 0);
+        this.hp = Math.max(this.hp - 20, 0);
+
+        this.$hp.animate(
+            {
+                width: (this.$hp.parent().width() * this.hp) / 100,
+            },
+            'medium'
+        );
+        this.$hp_div.animate(
+            {
+                width: (this.$hp.parent().width() * this.hp) / 100,
+            },
+            'fast'
+        );
 
         if (this.hp <= 0) {
             this.status = 6;
             this.frame_current_cnt = 0;
+            this.vx = 0;
         }
     }
 

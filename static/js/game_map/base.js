@@ -14,11 +14,27 @@ class GameMap extends AcGameObject {
         this.$canvas.focus(); // 聚焦
 
         this.controller = new Controller(this.$canvas);
+
+        this.$timer = this.root.$kof.find('.kof-head-timer');
+        this.time_left = 60000;
     }
 
     start() {}
 
     update() {
+        this.time_left -= this.timedelta;
+        if (this.time_left < 0) {
+            this.time_left = 0;
+
+            let [a, b] = this.root.players;
+            if (a.status !== 6 && b.status !== 6) {
+                a.status = b.status = 6;
+                a.frame_current_cnt = b.frame_current_cnt = 0;
+                a.vx = b.vx = 0;
+            }
+        }
+        this.$timer.text(parseInt(this.time_left / 1000));
+
         this.render();
     }
 
