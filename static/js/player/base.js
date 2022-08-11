@@ -39,6 +39,27 @@ class Player extends AcGameObject {
         this.x += (this.vx * this.timedelta) / 1000;
         this.y += (this.vy * this.timedelta) / 1000;
 
+        let [a, b] = this.root.players;
+        let r1 = {
+            x1: a.x,
+            y1: a.y,
+            x2: a.x + a.width,
+            y2: a.y + a.height,
+        };
+        let r2 = {
+            x1: b.x,
+            y1: b.y,
+            x2: b.x + b.width,
+            y2: b.y + b.height,
+        };
+
+        if (this.is_collision(r1, r2)) {
+            this.x -= (this.vx * this.timedelta) / 1000;
+            this.y -= (this.vy * this.timedelta) / 1000;
+
+            if (this.status === 3) this.status = 0;
+        }
+
         if (this.y > 450) {
             this.y = 450;
             this.vy = 0;
