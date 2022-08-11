@@ -40,6 +40,10 @@ class Player extends AcGameObject {
         this.y += (this.vy * this.timedelta) / 1000;
 
         let [a, b] = this.root.players;
+        if (a !== this) {
+            [a, b] = [b, a];
+        }
+
         let r1 = {
             x1: a.x,
             y1: a.y,
@@ -54,8 +58,10 @@ class Player extends AcGameObject {
         };
 
         if (this.is_collision(r1, r2)) {
-            this.x -= (this.vx * this.timedelta) / 1000;
-            this.y -= (this.vy * this.timedelta) / 1000;
+            b.x += (this.vx * this.timedelta) / 1000 / 2;
+            b.y += (this.vy * this.timedelta) / 1000 / 2;
+            a.x -= (this.vx * this.timedelta) / 1000 / 2;
+            a.y -= (this.vy * this.timedelta) / 1000 / 2;
 
             if (this.status === 3) this.status = 0;
         }
