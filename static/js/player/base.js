@@ -85,7 +85,7 @@ class Player extends AcGameObject {
     }
 
     update_control() {
-        let w, a, d, space;
+        let w, a, d, space, refresh;
         if (this.id === 0) {
             w = this.pressed_keys.has('w');
             a = this.pressed_keys.has('a');
@@ -96,6 +96,10 @@ class Player extends AcGameObject {
             a = this.pressed_keys.has('ArrowLeft');
             d = this.pressed_keys.has('ArrowRight');
             space = this.pressed_keys.has('Enter');
+        }
+        refresh = this.pressed_keys.has('Backspace');
+        if (refresh) {
+            location.reload();
         }
 
         if (this.status === 0 || this.status === 1) {
